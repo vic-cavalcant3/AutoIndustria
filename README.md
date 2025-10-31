@@ -14,37 +14,24 @@ A comunicação BLE permite que o sistema receba comandos via smartphone ou outr
 - 🔔 Feedback visual via LED onboard
 - 🔄 Reconexão automática após desconexão BLE
 
----
-
-## 🧩 Estrutura do Projeto
-```
-📂 ControleBLE_ESP32
- ┣ 📜 main.cpp              → Lógica principal do sistema BLE
- ┗ ⚙️ platformio.ini        → Configuração do ambiente PlatformIO
-```
 
 ---
 
 ## 🖥️ Como Usar
 
 ### 1. Abra o projeto no VS Code + PlatformIO
-
 ### 2. Conecte o ESP32 via USB
-
 ### 3. Configure a porta no `platformio.ini`
 ```ini
 upload_port = COM9
 ```
-
 ### 4. Faça o upload para a placa
 ```bash
 pio run --target upload
 ```
-
 ### 5. Conecte-se ao dispositivo BLE
-
 - Nome do dispositivo: **Industria_LEDs**
-- Use um app BLE como [nRF Connect](https://www.nordicsemi.com/Products/Development-tools/nrf-connect-for-mobile)
+- Use um web como o index.html na raiz.
 
 ### 6. Envie comandos pelo app BLE
 
@@ -83,39 +70,15 @@ pio run --target upload
 
 ## 📸 Demonstração
 
-> 📌 *Adicione aqui uma foto ou vídeo do projeto em funcionamento!*
+![WhatsApp Image 2025-10-31 at 16 26 30](https://github.com/user-attachments/assets/c47609f8-3253-401b-b6aa-843b46b00008)
 
-<!-- Exemplo de como adicionar imagem:
-![Demonstração do Projeto](./images/demo.gif)
--->
 
----
 
 ## 🧑‍💻 Autor
 
-**Victor Cavalcante** *(morzinho)*  
+**Victor Cavalcante**
 Desenvolvimento de Sistemas – SENAI
 
 💬 *"Tecnologia não é só código — é criatividade em ação."*
 
 ---
-
-## 📝 Licença
-
-Este projeto está sob a licença MIT. Sinta-se livre para usar, modificar e distribuir.
-
----
-
-## 🤝 Contribuições
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/NovaFuncionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/NovaFuncionalidade`)
-5. Abra um Pull Request
-
----
-
-⭐ **Se este projeto foi útil, deixe uma estrela no repositório!**
