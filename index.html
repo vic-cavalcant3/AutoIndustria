@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de LEDs - Indústria BLE</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #3a3a5f);
+      color: #fff;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: #6c63ff;
+      border: none;
+      color: white;
+      padding: 15px 25px;
+      margin: 10px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #5848d6;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-size: 1.1rem;
+    }
+
+    .led-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🔵 Controle de LEDs via Bluetooth</h1>
+
+  <button id="connectBtn">🔗 Conectar ao ESP32</button>
+  <div id="status">Aguardando conexão...</div>
+
+  <div class="led-controls" style="display:none;" id="controls">
+    <div class="row">
+      <button onclick="sendCommand('L1')">Ligar LED 1 🔴</button>
+      <button onclick="sendCommand('D1')">Desligar LED 1</button>
+    </div>
+    <div class="row">
+      <button onclick="sendCommand('L2')">Ligar LED 2 🟢</button>
+      <button onclick="sendCommand('D2')">Desligar LED 2</button>
+    </div>
+    <div class="row">
+      <button onclick="sendCommand('L3')">Ligar LED 3 🟡</button>
+      <button onclick="sendCommand('D3')">Desligar LED 3</button>
+    </div>
+    <div class="row">
+      <button onclick="sendCommand('ALL_ON')">Ligar Todos 💡</button>
+      <button onclick="sendCommand('ALL_OFF')">Desligar Todos ⚫</button>
+    </div>
+  </div>
+
+  <script>
+    const SERVICE_UUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
+    const CHARACTERISTIC_UUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
+
+    let device, server, service, characteristic;
+
+    document.getElementById('connectBtn').addEventListener('click', async () => {
+      try {
+        document.getElementById('status').textContent = '🔍 Procurando dispositivos BLE...';
+
+        device = await navigator.bluetooth.requestDevice({
+          filters: [{ name: 'Industria_LEDs' }],
+          optionalServices: [SERVICE_UUID]
+        });
+
+        server = await device.gatt.connect();
+        service = await server.getPrimaryService(SERVICE_UUID);
+        characteristic = await service.getCharacteristic(CHARACTERISTIC_UUID);
+
+        document.getElementById('status').textContent = '✅ Conectado ao ESP32!';
+        document.getElementById('controls').style.display = 'block';
+
+      } catch (error) {
+        console.error(error);
+        document.getElementById('status').textContent = '❌ Erro na conexão: ' + error;
+      }
+    });
+
+    async function sendCommand(cmd) {
+      if (!characteristic) {
+        alert('Conecte ao dispositivo primeiro!');
+        return;
+      }
+
+      const encoder = new TextEncoder();
+      await characteristic.writeValue(encoder.encode(cmd));
+      document.getElementById('status').textContent = `📤 Comando enviado: ${cmd}`;
+    }
+  </script>
+
+</body>
+</html>
